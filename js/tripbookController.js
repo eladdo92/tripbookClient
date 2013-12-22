@@ -38,6 +38,7 @@ var tripbookController = (function($, serverProxy, htmlGenerator, userManager) {
 
     function addComment(tripId, commentSelector) {
         var comment = $(commentSelector).val();
+        if(!comment) return;
         htmlGenerator.addComment(tripId, comment, userManager.getCurrentUser());
     }
 
