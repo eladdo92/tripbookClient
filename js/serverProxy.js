@@ -18,6 +18,15 @@ var serverProxy = (function($) {
         return $.getJSON(url);
     }
 
+    function like(tripId, userId) {
+        var url = baseUrl + 'tracks/like/' + tripId;
+        return $.ajax({
+            type: 'put',
+            url: url,
+            data: { user_id: userId }
+        });
+    }
+
     function login() {
         //todo: implement!
     }
@@ -26,6 +35,7 @@ var serverProxy = (function($) {
         getFeed: getFeed,
         getProfile: getProfile,
         getPlacePage: getPlacePage,
+        like: like,
         login: login
     };
 

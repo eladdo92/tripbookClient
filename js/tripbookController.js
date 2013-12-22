@@ -20,9 +20,31 @@ var tripbookController = (function($, serverProxy, htmlGenerator, userManager) {
         return html;
     }
 
+    function likeTrip(tripId) {
+        serverProxy.like(tripId, userManager.getCurrentUser()._id)
+            .success(function(){
+                htmlGenerator.likeTrip(tripId);
+            })
+            .fail(function(error) {
+                htmlGenerator.likeTrip(tripId);
+                console.log(error);
+            });
+
+    }
+
+    function dislikeTrip(tripId) {
+        htmlGenerator.dislikeTrip(tripId);
+    }
+
+    function addComment(tripId, commentSelector) {
+        var comment = $(commentSelector).val();
+        htmlGenerator.addComment(tripId, comment, userManager.getCurrentUser());
+    }
+
     function init() {
         userManager.login(); //just for now...
-        var userId = userManager.getCurrentUserId();
+        var userId = userManager.getCurrentUser()._id;
+
         if(userId) {
             getFeed(userId).then(function(feed) {
                 $('#feedContent').html(feed);
@@ -35,7 +57,10 @@ var tripbookController = (function($, serverProxy, htmlGenerator, userManager) {
     }
 
     return {
-        init: init
+        init: init,
+        likeTrip: likeTrip,
+        dislikeTrip: dislikeTrip,
+        addComment: addComment
     };
 
 })(jQuery, serverProxy, htmlGenerator, userManager);
